@@ -16,7 +16,7 @@ export class SignalrService {
   
   public startConnection = () => {
     this.hubConnection = new signalR.HubConnectionBuilder()
-                            .withUrl('https://localhost:5001/chart')
+                            .withUrl('https://localhost:7095/notification-hub')
                             .withAutomaticReconnect()
                             .configureLogging(signalR.LogLevel.Information)
                             .build();
@@ -26,30 +26,23 @@ export class SignalrService {
       .catch(err => console.log('Error while starting connection: ' + err))
 
     this.hubConnection.onreconnected(() => {
-      this.http.get('https://localhost:5001/api/chart')
+      this.http.get('https://localhost:7095/notification-hub')
       .subscribe(res => {
         console.log(res);
       })
     })
   }
     
-  public addTransferChartDataListener = () => {
-    this.hubConnection.on('transferchartdata', (data) => {
-      this.data = data;
+  public addDataListener = () => {
+    this.hubConnection.on('ReceiveNotification', (data) => {
+      
       console.log(data);
     });
   }
 
-  public broadcastChartData = () => {
-    const data = this.data.map(m => {
-      const temp = {
-        data: m.data,
-        label: m.label
-      }
-      return temp;
-    });
-
-    this.hubConnection.invoke('broadcastchartdata', data)
+  public broadcastData = () => {
+   
+    this.hubConnection.invoke('CallFromClient', "Hello from client....")
     .catch(err => console.error(err));
   }
 

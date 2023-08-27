@@ -1,4 +1,4 @@
-<div style="display: block" *ngIf='signalRService.data'>
+<!-- <div style="display: block" *ngIf='signalRService.data'>
   <canvas baseChart
           [datasets]="signalRService.data"
           [labels]="chartLabels"
@@ -12,4 +12,7 @@
   <li *ngFor='let data of signalRService.bradcastedData'>
     <strong>Label: </strong> {{data.label}} - <strong>Value: </strong> {{data.data[0]}}
   </li>
-</ul>
+</ul> -->
+
+
+<button (click)="bntClicked('Button clicked')">Click me</button>

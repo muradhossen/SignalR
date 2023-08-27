@@ -27,20 +27,20 @@ export class AppComponent {
 
   ngOnInit() {
     this.signalRService.startConnection();
-    this.signalRService.addTransferChartDataListener();
+    this.signalRService.addDataListener();
     this.signalRService.addBroadcastChartDataListener();   
     this.startHttpRequest();
   }
 
   private startHttpRequest = () => {
-    this.http.get('https://localhost:5001/api/chart')
+    this.http.get('https://localhost:7095/WeatherForecast')
       .subscribe(res => {
         console.log(res);
       })
   }
 
-  public chartClicked = (event) => {
+  public bntClicked = (event) => {
     console.log(event);
-    this.signalRService.broadcastChartData();
+    this.signalRService.broadcastData();
   }
 }
