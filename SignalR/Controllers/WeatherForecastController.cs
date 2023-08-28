@@ -24,9 +24,11 @@ namespace SignalR.Controllers
         }
 
         [HttpGet(Name = "GetWeatherForecast")]
-        public IEnumerable<WeatherForecast> Get()
+        public async Task<IEnumerable<WeatherForecast>> Get()
         {
-            _hubContext.Clients.All.SendAsync("ReceiveNotification", "Hello from API");
+            //await _hubContext.Clients.All.SendAsync("ReceiveNotification", "Hello from API");
+           var hub = new HubEvent();
+            await hub.SendNotification(_hubContext,"Hello from API");
 
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {

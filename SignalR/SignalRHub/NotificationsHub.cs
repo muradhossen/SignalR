@@ -5,49 +5,29 @@ namespace SignalR.SignalRHub
     public class NotificationsHub : Hub<INotificationHub>
     {
         #region Without typesefty
-        //public async Task SendNotification(string content)
-        //{
-        //    await Clients.All.SendAsync("ReceiveNotification", content);
-        //}
 
         //public async Task CallFromClient(string content)
-        //{
-        //    var weather = Enumerable.Range(1, 5).Select(index => new WeatherForecast
-        //    {
-        //        Date = DateTime.Now.AddDays(index),
-        //        TemperatureC = Random.Shared.Next(-20, 55)                 
-        //    })
-        //  .ToArray();
+        //{ 
 
-        //    await Clients.All.SendAsync("WeatherNotification", weather);
+        //    await Clients.All.SendAsync("ReceiveNotification", "Server method called");
         //}
 
         //public override Task OnConnectedAsync()
         //{
         //    base.OnConnectedAsync();
 
-        //    Clients.All.SendAsync("ReceiveNotification", $"Connection --> {Context.ConnectionId}");
+        //    Clients.All.SendAsync("ConnectedNotification", Context.ConnectionId);
 
         //    return Task.CompletedTask;
         //}
         #endregion
 
 
-        public async Task SendNotification(string content)
-        {
-            await Clients.All.ReciveNotification("ReceiveNotification", content);
-        }
-
+        #region WithTypeSafty
         public async Task CallFromClient(string content)
         {
-            var weather = Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = Random.Shared.Next(-20, 55)
-            })
-          .ToArray();
 
-            await Clients.All.SendWeatherNotification("WeatherNotification", weather);
+            await Clients.All.ReciveNotification("ReceiveNotification", "Server method called");
         }
 
         public override Task OnConnectedAsync()
@@ -58,6 +38,9 @@ namespace SignalR.SignalRHub
 
             return Task.CompletedTask;
         }
+        #endregion
+
+
 
     }
 }

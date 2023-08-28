@@ -1,20 +1,23 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import * as signalR from "@microsoft/signalr"
-import { ChartModel } from '../_interfaces/chartmodel.model';
+import { MessageModel } from '../_interfaces/chartmodel.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SignalrService {
-  public data: ChartModel[];
-  public bradcastedData: ChartModel[];
+  public activities: string[] = []; 
+public signalRConnectionId = '';
 
   constructor(private http: HttpClient) {}
 
   private hubConnection: signalR.HubConnection
   
   public startConnection = () => {
+ 
+    this.addNewActivity("Start connecting to the server...");
+
     this.hubConnection = new signalR.HubConnectionBuilder()
                             .withUrl('https://localhost:7095/notification-hub')
                             .withAutomaticReconnect()
@@ -22,7 +25,7 @@ export class SignalrService {
                             .build();
     this.hubConnection
       .start()
-      .then(() => console.log('Connection started'))
+      .then(() => this.addNewActivity("Connection started..."))
       .catch(err => console.log('Error while starting connection: ' + err))
 
     this.hubConnection.onreconnected(() => {
@@ -36,19 +39,36 @@ export class SignalrService {
   public addDataListener = () => {
     this.hubConnection.on('ReceiveNotification', (data) => {
       
-      console.log(data);
+      this.addNewActivity("API notification recived. " + data);
+    });
+  }
+
+  public ConnectedNotificationMetod = () => {
+    this.hubConnection.on('ConnectedNotification', (data) => {
+       
+       this.signalRConnectionId = data;
+
+       this.addNewActivity("Connection id -> "+this.signalRConnectionId);
     });
   }
 
   public broadcastData = () => {
    
     this.hubConnection.invoke('CallFromClient', "Hello from client....")
+    .then(c=> this.addNewActivity("After successfully calling server method..."))
     .catch(err => console.error(err));
   }
 
   public addBroadcastChartDataListener = () => {
     this.hubConnection.on('broadcastchartdata', (data) => {
-      this.bradcastedData = data;
+      // this.bradcastedData = data;
     })
+  }
+  public addNewActivity(actitity){
+    this.activities.push(actitity);
+  }
+
+  public clearAcitvities(){
+    this.activities = [];
   }
 }

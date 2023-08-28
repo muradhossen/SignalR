@@ -10,37 +10,35 @@ import { ChartConfiguration, ChartType } from 'chart.js';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  chartOptions: ChartConfiguration['options'] = {
-    responsive: true,
-    scales: {
-      y: {
-        min: 0
-      }
-    }
-  };
 
-  chartLabels: string[] = ['Real time data for the chart'];
-  chartType: ChartType = 'bar';
-  chartLegend: boolean = true;
 
   constructor(public signalRService: SignalrService, private http: HttpClient) { }
 
   ngOnInit() {
     this.signalRService.startConnection();
     this.signalRService.addDataListener();
-    this.signalRService.addBroadcastChartDataListener();   
-    this.startHttpRequest();
+    this.signalRService.ConnectedNotificationMetod();
+    this.signalRService.addBroadcastChartDataListener();
+
   }
 
   private startHttpRequest = () => {
+    this.signalRService.addNewActivity("Calling API...")
     this.http.get('https://localhost:7095/WeatherForecast')
       .subscribe(res => {
         console.log(res);
+        this.signalRService.addNewActivity("Successfully getting response from API.")
+
       })
   }
 
   public bntClicked = (event) => {
-    console.log(event);
+    this.signalRService.addNewActivity("Calling server method...");
     this.signalRService.broadcastData();
+  }
+
+  public callApi = (event) => {
+    console.log(event);
+    this.startHttpRequest();
   }
 }

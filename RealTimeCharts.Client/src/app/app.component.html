@@ -1,18 +1,17 @@
-<!-- <div style="display: block" *ngIf='signalRService.data'>
-  <canvas baseChart
-          [datasets]="signalRService.data"
-          [labels]="chartLabels"
-          [options]="chartOptions"
-          [legend]="chartLegend"
-          [chartType]="chartType"
-          (chartClick)="chartClicked($event)"></canvas>
+<h1>
+ SignalR connection demo
+</h1>
+
+
+
+<button (click)="bntClicked('Button clicked')">Call Server method</button>
+
+<button (click)="callApi('API called...')">CAll API</button>
+<button (click)="signalRService.clearAcitvities()">Clear activities</button>
+
+
+
+<div *ngFor="let activity of signalRService.activities">
+<b>Activity : </b> {{activity}}
 </div>
-<br><br>
-<ul>
-  <li *ngFor='let data of signalRService.bradcastedData'>
-    <strong>Label: </strong> {{data.label}} - <strong>Value: </strong> {{data.data[0]}}
-  </li>
-</ul> -->
 
-
-<button (click)="bntClicked('Button clicked')">Click me</button>
