@@ -59,9 +59,9 @@ public signalRConnectionId = '';
     .catch(err => console.error(err));
   }
 
-  public addBroadcastChartDataListener = () => {
-    this.hubConnection.on('broadcastchartdata', (data) => {
-      // this.bradcastedData = data;
+  public callFromClient = () => {
+    this.hubConnection.on('callFromClient', (data) => {
+     alert("calling by server...");
     })
   }
   public addNewActivity(actitity){

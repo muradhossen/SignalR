@@ -18,7 +18,7 @@ export class AppComponent {
     this.signalRService.startConnection();
     this.signalRService.addDataListener();
     this.signalRService.ConnectedNotificationMetod();
-    this.signalRService.addBroadcastChartDataListener();
+    this.signalRService.callFromClient();
 
   }
 

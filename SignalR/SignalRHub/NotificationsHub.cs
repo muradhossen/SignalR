@@ -25,9 +25,10 @@ namespace SignalR.SignalRHub
 
         #region WithTypeSafty
         public async Task CallFromClient(string content)
-        {
-
+        { 
             await Clients.All.ReciveNotification("ReceiveNotification", "Server method called");
+
+            await Clients.All.CallFromClient("callFromClient", "calling client method called from server...");
         }
 
         public override Task OnConnectedAsync()
